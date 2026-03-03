@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "tsx --watch src/index.ts"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "husky": "^9.1.7"
   },
