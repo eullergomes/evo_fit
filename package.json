@@ -12,6 +12,8 @@
     "node": "24.x"
   },
   "dependencies": {
+    "dotenv": "^17.3.1",
+    "fastify": "^5.7.4",
     "husky": "^9.1.7"
   },
   "devDependencies": {
