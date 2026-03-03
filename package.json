@@ -1,0 +1,21 @@
+{
+  "name": "evo_fit",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Euller Gomes",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch src/index.ts"
+  },
+  "dependencies": {
+    "husky": "^9.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.11.0",
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
