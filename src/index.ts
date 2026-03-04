@@ -1,7 +1,10 @@
 import "dotenv/config";
 
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUI from "@fastify/swagger-ui";
 import Fastify from "fastify";
 import {
+  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   ZodTypeProvider,
@@ -15,12 +18,33 @@ const app = Fastify({
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
+await app.register(fastifySwagger, {
+  openapi: {
+    info: {
+      title: 'EvoFit API',
+      description: 'API documentation for EvoFit application',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        description: 'Localhost',
+        url: 'http://localhost:8081',
+      }
+    ],
+  },
+  transform: jsonSchemaTransform,
+});
+
+await app.register(fastifySwaggerUI, {
+  routePrefix: '/docs',
+});
+
 app.withTypeProvider<ZodTypeProvider>().route({
   method: "GET",
   url: "/",
   schema: {
-    description: "Example route",
-    tags: ["example"],
+    description: "Returns a friendly greeting message.",
+    tags: ["Hello worlds"],
     response: {
       200: z.object({
         message: z.string(),
@@ -29,7 +53,7 @@ app.withTypeProvider<ZodTypeProvider>().route({
   },
   handler: async function handler() {
     return { message: "Hello, World!" };
-  }
+  },
 });
 
 try {
