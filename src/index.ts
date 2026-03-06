@@ -3,6 +3,7 @@ import "dotenv/config";
 import fastifyCors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUI from "@fastify/swagger-ui";
+import fastifyApiReference from "@scalar/fastify-api-reference";
 import Fastify from "fastify";
 import {
   jsonSchemaTransform,
@@ -40,15 +41,34 @@ await app.register(fastifySwagger, {
   transform: jsonSchemaTransform,
 });
 
-await app.register(fastifySwaggerUI, {
+await app.register(fastifyApiReference, {
   routePrefix: "/docs",
-  uiConfig: {
-    urls: [
-      { url: "/docs/json", name: "API" },
-      { url: "/api/auth/open-api/generate-schema", name: "Auth" },
-    ],
+  configuration: {
+    sources: [
+      {
+        title: "EvoFit API",
+        slug: "evofit-api",
+        url: "/swagger.json",
+      },
+      {
+        title: "EvoFit API",
+        slug: "evofit-api",
+        url: "/api/auth/open-api/generate-schema",
+      }
+    ]
+  }
+})
+
+app.withTypeProvider<ZodTypeProvider>().route({
+  method: "GET",
+  url: "/swagger.json",
+  schema: {
+    hide: true,
   },
-});
+  handler: async function handler() {
+    return app.swagger();
+  },
+})
 
 app.withTypeProvider<ZodTypeProvider>().route({
   method: "GET",
